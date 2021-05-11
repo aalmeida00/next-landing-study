@@ -4,7 +4,12 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import Drawer from 'components/drawer';
 import { IoMdClose, IoMdMenu } from 'react-icons/io';
 import { Link } from 'react-scroll';
-import { FaFacebookF, FaTwitter, FaGithubAlt, FaDribbble } from 'react-icons/fa';
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaGithubAlt,
+  FaDribbble,
+} from 'react-icons/fa';
 import menuItems from './header.data';
 
 const social = [
@@ -27,10 +32,52 @@ const social = [
 ];
 
 export default function MobileDrawer() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   return (
-   <h1>Mobile Drawer</h1>
+    <Drawer
+      width="320px"
+      drawerHandler={
+        <Box sx={styles.handler}>
+          <IoMdMenu size="26px" />
+        </Box>
+      }
+      open={isDrawerOpen}
+      toggleHandler={() => setIsDrawerOpen((prevState) => !prevState)}
+      closeButton={<IoMdClose size="24px" color="#00000" />}
+      drawerStyle={styles.drawer}
+      closeBtnStyle={styles.close}
+    >
+      <Scrollbars autoHide>
+        <Box sx={styles.content}>
+          <Box sx={styles.menu}>
+            {menuItems.map((menuItem, i) => (
+              <Link
+                activeClass="active"
+                to={menuItem.path}
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
+                key={i}
+              >
+                {menuItem.label}
+              </Link>
+            ))}
+          </Box>
+          <Box sx={styles.menuFooter}>
+            <Box sx={styles.social}>
+              {social.map((socialItem, i) => (
+                <Box as="span" key={i} sx={styles.social.icon}>
+                  <Link to={socialItem.path}>{socialItem.icon}</Link>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+      </Scrollbars>
+    </Drawer>
   );
-};
+}
 
 const styles = {
   handler: {
